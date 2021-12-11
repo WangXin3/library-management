@@ -1,4 +1,4 @@
-package com.wxx.librarymanagement;
+package com.wxx.library.management;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
