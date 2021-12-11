@@ -10,9 +10,7 @@ import org.springframework.http.HttpStatus;
 @Data
 @AllArgsConstructor
 public class RespBean {
-    /**
-     * 你好
-     */
+
     private Integer code;
     private String msg;
     private Object data;
