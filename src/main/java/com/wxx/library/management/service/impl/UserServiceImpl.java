@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wxx.library.management.mapper.UserMapper;
 import com.wxx.library.management.entity.User;
 import com.wxx.library.management.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 
@@ -20,6 +21,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User getUserByUsername(String username) {
         return this.lambdaQuery().eq(User::getUsername, username).one();
+    }
+
+    @Override
+    public User infoByToken() {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return this.getUserByUsername(username);
     }
 }
 

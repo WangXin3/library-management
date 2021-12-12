@@ -2,6 +2,7 @@ package com.wxx.library.management.config;
 
 import com.alibaba.fastjson.JSON;
 import com.wxx.library.management.util.JwtUtil;
+import com.wxx.library.management.util.RequestUtil;
 import com.wxx.library.management.util.ResponseUtil;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,11 +40,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
+        com.wxx.library.management.entity.User user = RequestUtil.getUserFormRequestBody(request);
 
-        return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>()));
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user.getUsername(),
+                user.getPassword(), new ArrayList<>());
+        return authenticationManager.authenticate(authentication);
     }
+
+
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {

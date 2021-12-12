@@ -24,6 +24,11 @@ public class User extends BaseEntity {
     private String nickName;
 
     /**
+     * 头像
+     */
+    private String avatar;
+
+    /**
      * 性别 0-女 1-男
      */
     private Integer gender;

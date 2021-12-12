@@ -50,6 +50,11 @@ public class UserController {
         return RespBean.success(userService.getById(id));
     }
 
+    @GetMapping("/infoByToken")
+    public RespBean infoByToken() {
+        return RespBean.success(userService.infoByToken());
+    }
+
     /**
      * 新增数据
      *

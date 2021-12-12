@@ -12,5 +12,7 @@ import com.wxx.library.management.entity.User;
 public interface UserService extends IService<User> {
 
     User getUserByUsername(String username);
+
+    User infoByToken();
 }
 
