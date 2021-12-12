@@ -7,6 +7,7 @@ import com.wxx.library.management.entity.Role;
 import com.wxx.library.management.service.RoleService;
 import com.wxx.library.management.util.RespBean;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,8 +33,9 @@ public class RoleController {
      * @return 所有数据
      */
     @GetMapping
+    @PreAuthorize("@lm.check('role:list')")
     public RespBean selectAll(Page<Role> page, Role role) {
-        return RespBean.successData(roleService.page(page, new QueryWrapper<>(role)));
+        return RespBean.success(roleService.page(page, new QueryWrapper<>(role)));
     }
 
     /**
@@ -43,8 +45,9 @@ public class RoleController {
      * @return 单条数据
      */
     @GetMapping("/{id}")
+    @PreAuthorize("@lm.check('role:list')")
     public RespBean selectOne(@PathVariable String id) {
-        return RespBean.successData(roleService.getById(id));
+        return RespBean.success(roleService.getById(id));
     }
 
     /**
@@ -54,8 +57,9 @@ public class RoleController {
      * @return 新增结果
      */
     @PostMapping
+    @PreAuthorize("@lm.check('role:add')")
     public RespBean insert(@RequestBody Role role) {
-        return RespBean.successData(roleService.save(role));
+        return RespBean.success(roleService.save(role));
     }
 
     /**
@@ -65,8 +69,9 @@ public class RoleController {
      * @return 修改结果
      */
     @PutMapping
+    @PreAuthorize("@lm.check('role:edit')")
     public RespBean update(@RequestBody Role role) {
-        return RespBean.successData(roleService.updateById(role));
+        return RespBean.success(roleService.updateById(role));
     }
 
     /**
@@ -76,8 +81,9 @@ public class RoleController {
      * @return 删除结果
      */
     @DeleteMapping
+    @PreAuthorize("@lm.check('role:del')")
     public RespBean delete(@RequestParam("idList") List<String> idList) {
-        return RespBean.successData(roleService.removeByIds(idList));
+        return RespBean.success(roleService.removeByIds(idList));
     }
 }
 

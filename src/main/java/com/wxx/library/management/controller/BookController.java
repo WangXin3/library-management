@@ -7,6 +7,7 @@ import com.wxx.library.management.entity.Book;
 import com.wxx.library.management.service.BookService;
 import com.wxx.library.management.util.RespBean;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * 书(Book)表控制层
  *
  * @author wangxin
- * @since 2021-12-11 15:05:23
+ * @since 2021-12-12 20:33:09
  */
 @RestController
 @RequestMapping("/book")
@@ -32,8 +33,9 @@ public class BookController {
      * @return 所有数据
      */
     @GetMapping
+    @PreAuthorize("@lm.check('book:list')")
     public RespBean selectAll(Page<Book> page, Book book) {
-        return RespBean.successData(bookService.page(page, new QueryWrapper<>(book)));
+        return RespBean.success(bookService.page(page, new QueryWrapper<>(book)));
     }
 
     /**
@@ -42,9 +44,10 @@ public class BookController {
      * @param id 主键
      * @return 单条数据
      */
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
+    @PreAuthorize("@lm.check('book:list')")
     public RespBean selectOne(@PathVariable String id) {
-        return RespBean.successData(bookService.getById(id));
+        return RespBean.success(bookService.getById(id));
     }
 
     /**
@@ -54,8 +57,9 @@ public class BookController {
      * @return 新增结果
      */
     @PostMapping
+    @PreAuthorize("@lm.check('book:add')")
     public RespBean insert(@RequestBody Book book) {
-        return RespBean.successData(bookService.save(book));
+        return RespBean.success(bookService.save(book));
     }
 
     /**
@@ -65,8 +69,9 @@ public class BookController {
      * @return 修改结果
      */
     @PutMapping
+    @PreAuthorize("@lm.check('book:edit')")
     public RespBean update(@RequestBody Book book) {
-        return RespBean.successData(bookService.updateById(book));
+        return RespBean.success(bookService.updateById(book));
     }
 
     /**
@@ -76,8 +81,9 @@ public class BookController {
      * @return 删除结果
      */
     @DeleteMapping
+    @PreAuthorize("@lm.check('book:del')")
     public RespBean delete(@RequestParam("idList") List<String> idList) {
-        return RespBean.successData(bookService.removeByIds(idList));
+        return RespBean.success(bookService.removeByIds(idList));
     }
 }
 

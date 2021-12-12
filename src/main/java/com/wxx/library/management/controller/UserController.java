@@ -7,6 +7,7 @@ import com.wxx.library.management.entity.User;
 import com.wxx.library.management.service.UserService;
 import com.wxx.library.management.util.RespBean;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,8 +33,9 @@ public class UserController {
      * @return 所有数据
      */
     @GetMapping
+    @PreAuthorize("@lm.check('user:list')")
     public RespBean selectAll(Page<User> page, User user) {
-        return RespBean.successData(userService.page(page, new QueryWrapper<>(user)));
+        return RespBean.success(userService.page(page, new QueryWrapper<>(user)));
     }
 
     /**
@@ -43,8 +45,9 @@ public class UserController {
      * @return 单条数据
      */
     @GetMapping("/{id}")
+    @PreAuthorize("@lm.check('user:list')")
     public RespBean selectOne(@PathVariable String id) {
-        return RespBean.successData(userService.getById(id));
+        return RespBean.success(userService.getById(id));
     }
 
     /**
@@ -54,8 +57,9 @@ public class UserController {
      * @return 新增结果
      */
     @PostMapping
+    @PreAuthorize("@lm.check('user:add')")
     public RespBean insert(@RequestBody User user) {
-        return RespBean.successData(userService.save(user));
+        return RespBean.success(userService.save(user));
     }
 
     /**
@@ -65,8 +69,9 @@ public class UserController {
      * @return 修改结果
      */
     @PutMapping
+    @PreAuthorize("@lm.check('user:edit')")
     public RespBean update(@RequestBody User user) {
-        return RespBean.successData(userService.updateById(user));
+        return RespBean.success(userService.updateById(user));
     }
 
     /**
@@ -76,8 +81,9 @@ public class UserController {
      * @return 删除结果
      */
     @DeleteMapping
+    @PreAuthorize("@lm.check('user:del')")
     public RespBean delete(@RequestParam("idList") List<String> idList) {
-        return RespBean.successData(userService.removeByIds(idList));
+        return RespBean.success(userService.removeByIds(idList));
     }
 }
 

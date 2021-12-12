@@ -8,8 +8,21 @@ spring:
     password: root
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    port: 6379
+    host: localhost
 
 
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.wxx.library.management.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+logging:
+  level:
+    com.wxx.library.management.mapper: debug
+
+jwt:
+  secret: xiaohe
+  expire: 1440

@@ -7,6 +7,7 @@ import com.wxx.library.management.entity.BookCategory;
 import com.wxx.library.management.service.BookCategoryService;
 import com.wxx.library.management.util.RespBean;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * 图书分类(BookCategory)表控制层
  *
  * @author wangxin
- * @since 2021-12-11 21:13:58
+ * @since 2021-12-12 20:33:25
  */
 @RestController
 @RequestMapping("/bookCategory")
@@ -32,8 +33,9 @@ public class BookCategoryController {
      * @return 所有数据
      */
     @GetMapping
+    @PreAuthorize("@lm.check('bookCategory:list')")
     public RespBean selectAll(Page<BookCategory> page, BookCategory bookCategory) {
-        return RespBean.successData(bookCategoryService.page(page, new QueryWrapper<>(bookCategory)));
+        return RespBean.success(bookCategoryService.page(page, new QueryWrapper<>(bookCategory)));
     }
 
     /**
@@ -43,8 +45,9 @@ public class BookCategoryController {
      * @return 单条数据
      */
     @GetMapping("/{id}")
+    @PreAuthorize("@lm.check('bookCategory:list')")
     public RespBean selectOne(@PathVariable String id) {
-        return RespBean.successData(bookCategoryService.getById(id));
+        return RespBean.success(bookCategoryService.getById(id));
     }
 
     /**
@@ -54,8 +57,9 @@ public class BookCategoryController {
      * @return 新增结果
      */
     @PostMapping
+    @PreAuthorize("@lm.check('bookCategory:add')")
     public RespBean insert(@RequestBody BookCategory bookCategory) {
-        return RespBean.successData(bookCategoryService.save(bookCategory));
+        return RespBean.success(bookCategoryService.save(bookCategory));
     }
 
     /**
@@ -65,8 +69,9 @@ public class BookCategoryController {
      * @return 修改结果
      */
     @PutMapping
+    @PreAuthorize("@lm.check('bookCategory:edit')")
     public RespBean update(@RequestBody BookCategory bookCategory) {
-        return RespBean.successData(bookCategoryService.updateById(bookCategory));
+        return RespBean.success(bookCategoryService.updateById(bookCategory));
     }
 
     /**
@@ -76,8 +81,9 @@ public class BookCategoryController {
      * @return 删除结果
      */
     @DeleteMapping
+    @PreAuthorize("@lm.check('bookCategory:del')")
     public RespBean delete(@RequestParam("idList") List<String> idList) {
-        return RespBean.successData(bookCategoryService.removeByIds(idList));
+        return RespBean.success(bookCategoryService.removeByIds(idList));
     }
 }
 

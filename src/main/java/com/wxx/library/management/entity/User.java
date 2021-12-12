@@ -1,5 +1,6 @@
 package com.wxx.library.management.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -40,6 +41,7 @@ public class User extends BaseEntity {
     /**
      * 密码
      */
+    @JsonIgnore
     private String password;
 
     /**
