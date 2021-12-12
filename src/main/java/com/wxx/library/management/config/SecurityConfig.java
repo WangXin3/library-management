@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        TokenLoginFilter loginFilter = new TokenLoginFilter(authenticationManager(), jwtUtil, stringRedisTemplate);
+        LoginFilter loginFilter = new LoginFilter(authenticationManager(), jwtUtil, stringRedisTemplate);
         TokenAuthenticationFilter tokenFilter = new TokenAuthenticationFilter(authenticationManager(), jwtUtil, stringRedisTemplate);
         http.exceptionHandling()
                 // 自定义 401 Unauthorized 未授权，就是没有登录，header中没有传Token

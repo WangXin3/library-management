@@ -24,14 +24,14 @@ import java.util.stream.Collectors;
  * @author wangxin
  * @since 2021/12/12
  */
-public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
+public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final StringRedisTemplate stringRedisTemplate;
 
-    protected TokenLoginFilter(AuthenticationManager authenticationManager,
-                               JwtUtil jwtUtil, StringRedisTemplate stringRedisTemplate) {
+    protected LoginFilter(AuthenticationManager authenticationManager,
+                          JwtUtil jwtUtil, StringRedisTemplate stringRedisTemplate) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.stringRedisTemplate = stringRedisTemplate;
