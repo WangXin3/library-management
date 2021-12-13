@@ -2,5 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wxx.library.management.mapper.MenuMapper">
 
+    <select id="getMenuByUserId" resultType="com.wxx.library.management.entity.Menu">
+        select m.*
+        from menu m
+                 left join role_menu rm on m.id = rm.menu_id and rm.deleted = 0
+                 left join user_role ur on ur.role_id = rm.role_id and ur.deleted = 0
+        where ur.user_id = #{userId} and m.deleted = 0;
+    </select>
 </mapper>
 

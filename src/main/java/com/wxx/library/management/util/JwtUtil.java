@@ -2,6 +2,8 @@ package com.wxx.library.management.util;
 
 
 import cn.hutool.core.date.DateUtil;
+import com.wxx.library.management.config.MyUserDetails;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.CompressionCodecs;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,6 +12,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Wang
@@ -32,12 +36,16 @@ public class JwtUtil {
     /**
      * 生成token
      *
-     * @param username 载荷中的数据
+     * @param userDetail 载荷中的数据
      * @return /
      */
-    public String generateToken(String username) {
+    public String generateToken(MyUserDetails userDetail) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("username", userDetail.getUsername());
+        map.put("id", userDetail.getId());
+
         return "Bearer " + Jwts.builder()
-                .setSubject(username) // 设置该token的主题
+                .setClaims(map) // 设置token数据
                 .setExpiration(DateUtil.offsetMinute(new Date(), this.expire).toJdkDate()) // 设置过期时间
                 .signWith(SignatureAlgorithm.HS512, secret) // 加密算法
                 .compressWith(CompressionCodecs.GZIP) // 压缩算法
@@ -51,8 +59,11 @@ public class JwtUtil {
      * @param token 用户请求中的令牌
      * @return 用户信息
      */
-    public String getInfoFromToken(String token) {
+    public MyUserDetails getInfoFromToken(String token) {
         token = token.substring(7);
-        return Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody().getSubject();
+        Claims body = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+        String username = (String) body.get("username");
+        String id = (String) body.get("id");
+        return new MyUserDetails(username, id);
     }
 }

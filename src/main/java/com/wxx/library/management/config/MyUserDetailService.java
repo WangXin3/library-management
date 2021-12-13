@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -46,7 +45,7 @@ public class MyUserDetailService implements UserDetailsService {
             authorities = permissions.stream().distinct().filter(StrUtil::isNotBlank).map(SimpleGrantedAuthority::new)
                     .collect(Collectors.toList());
         }
-        return new User(username, user.getPassword(), authorities);
+        return new MyUserDetails(user.getUsername(), user.getPassword(), user.getId(), user.getEnabled(), authorities);
     }
 
 }

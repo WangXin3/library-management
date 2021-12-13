@@ -26,8 +26,8 @@ public class TokenLogoutHandler implements LogoutHandler {
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         String token = request.getHeader("Authorization");
         if (CharSequenceUtil.isNotBlank(token)) {
-            String username = jwtUtil.getInfoFromToken(token);
-            stringRedisTemplate.delete(username);
+            MyUserDetails myUserDetails = jwtUtil.getInfoFromToken(token);
+            stringRedisTemplate.delete(myUserDetails.getUsername());
         }
 
         try {

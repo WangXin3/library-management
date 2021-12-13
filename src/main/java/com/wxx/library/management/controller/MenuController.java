@@ -85,5 +85,10 @@ public class MenuController {
     public RespBean delete(@RequestParam("idList") List<String> idList) {
         return RespBean.success(menuService.removeByIds(idList));
     }
+
+    @GetMapping("/buildMenu")
+    public RespBean buildMenu() {
+        return RespBean.success(menuService.buildMenu());
+    }
 }
 

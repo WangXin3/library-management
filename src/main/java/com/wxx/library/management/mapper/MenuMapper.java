@@ -3,6 +3,8 @@ package com.wxx.library.management.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wxx.library.management.entity.Menu;
 
+import java.util.List;
+
 /**
  * 菜单(Menu)表数据库访问层
  *
@@ -11,5 +13,6 @@ import com.wxx.library.management.entity.Menu;
  */
 public interface MenuMapper extends BaseMapper<Menu> {
 
+    List<Menu> getMenuByUserId(String userId);
 }
 

@@ -43,15 +43,15 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
             throws IOException, ServletException {
         String token = request.getHeader("Authorization");
         if (CharSequenceUtil.isNotBlank(token)) {
-            String username;
+            MyUserDetails myUserDetails;
             try {
-                username = jwtUtil.getInfoFromToken(token);
+                myUserDetails = jwtUtil.getInfoFromToken(token);
             } catch (Exception e) {
                 ResponseUtil.writerError(response, "篡改token!", HttpStatus.UNAUTHORIZED);
                 return;
             }
             // 从redis中获取权限列表
-            String authorityList = stringRedisTemplate.opsForValue().get(username);
+            String authorityList = stringRedisTemplate.opsForValue().get(myUserDetails.getUsername());
             Set<SimpleGrantedAuthority> authorities;
             if (CharSequenceUtil.isNotBlank(authorityList)) {
                 authorities = Objects.requireNonNull(JSON.parseArray(authorityList, String.class)).stream()
@@ -61,7 +61,7 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
             }
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    username, username, authorities);
+                    myUserDetails.getUsername(), myUserDetails.getId(), authorities);
             // 将用户信息，设置到 SecurityContext 中
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
