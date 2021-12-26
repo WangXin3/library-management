@@ -1,7 +1,7 @@
 package com.wxx.library.management.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wxx.library.management.entity.User;
 import com.wxx.library.management.service.UserService;
@@ -35,7 +35,7 @@ public class UserController {
     @GetMapping
     @PreAuthorize("@lm.check('user:list')")
     public RespBean selectAll(Page<User> page, User user) {
-        return RespBean.success(userService.page(page, new QueryWrapper<>(user)));
+        return RespBean.success(userService.page(page, new LambdaQueryWrapper<User>().like(User::getNickName, "%" + user.getNickName() + "%")));
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.wxx.library.management.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wxx.library.management.entity.Menu;
 import com.wxx.library.management.service.MenuService;
@@ -35,7 +35,20 @@ public class MenuController {
     @GetMapping
     @PreAuthorize("@lm.check('menu:list')")
     public RespBean selectAll(Page<Menu> page, Menu menu) {
-        return RespBean.success(menuService.page(page, new QueryWrapper<>(menu)));
+        return RespBean.success(menuService.page(page, new LambdaQueryWrapper<Menu>()
+                .like(Menu::getName, "%" + menu.getName() + "%").isNull(Menu::getPid)));
+    }
+
+    @GetMapping("/buildTree")
+    @PreAuthorize("@lm.check('menu:list')")
+    public RespBean buildTree(Menu menu) {
+        return RespBean.success(menuService.buildTree(menu));
+    }
+
+    @GetMapping("/getChildren")
+    @PreAuthorize("@lm.check('menu:list')")
+    public RespBean getChildren(@RequestParam("pid") String pid) {
+        return RespBean.success(menuService.getChildren(pid));
     }
 
     /**

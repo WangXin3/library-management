@@ -25,12 +25,7 @@ public class Menu extends BaseEntity {
     /**
      * 菜单标题
      */
-    private String title;
-
-    /**
-     * 组件名称
-     */
-    private String componentName;
+    private String name;
 
     /**
      * 组件
