@@ -20,5 +20,9 @@ public interface MenuService extends IService<Menu> {
     List<MenuVO> buildTree(Menu menu);
 
     List<MenuVO> getChildren(String pid);
+
+    List<String> getMenuByRoleId(String roleId);
+
+    List<String> getPermissionByUserId(String id);
 }
 

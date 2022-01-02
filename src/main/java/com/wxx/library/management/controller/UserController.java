@@ -1,9 +1,11 @@
 package com.wxx.library.management.controller;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wxx.library.management.entity.User;
+import com.wxx.library.management.entity.vo.UserVO;
 import com.wxx.library.management.service.UserService;
 import com.wxx.library.management.util.RespBean;
 import lombok.AllArgsConstructor;
@@ -35,7 +37,8 @@ public class UserController {
     @GetMapping
     @PreAuthorize("@lm.check('user:list')")
     public RespBean selectAll(Page<User> page, User user) {
-        return RespBean.success(userService.page(page, new LambdaQueryWrapper<User>().like(User::getNickName, "%" + user.getNickName() + "%")));
+        return RespBean.success(userService.page(page, new LambdaQueryWrapper<User>()
+                .like(StrUtil.isNotBlank(user.getNickName()),User::getNickName, "%" + user.getNickName() + "%")));
     }
 
     /**
@@ -47,7 +50,7 @@ public class UserController {
     @GetMapping("/{id}")
     @PreAuthorize("@lm.check('user:list')")
     public RespBean selectOne(@PathVariable String id) {
-        return RespBean.success(userService.getById(id));
+        return RespBean.success(userService.getByIdAndRole(id));
     }
 
     @GetMapping("/infoByToken")
@@ -63,8 +66,8 @@ public class UserController {
      */
     @PostMapping
     @PreAuthorize("@lm.check('user:add')")
-    public RespBean insert(@RequestBody User user) {
-        return RespBean.success(userService.save(user));
+    public RespBean insert(@RequestBody UserVO user) {
+        return RespBean.success(userService.saveAndSetPassword(user));
     }
 
     /**
@@ -75,8 +78,8 @@ public class UserController {
      */
     @PutMapping
     @PreAuthorize("@lm.check('user:edit')")
-    public RespBean update(@RequestBody User user) {
-        return RespBean.success(userService.updateById(user));
+    public RespBean update(@RequestBody UserVO user) {
+        return RespBean.success(userService.updateUser(user));
     }
 
     /**

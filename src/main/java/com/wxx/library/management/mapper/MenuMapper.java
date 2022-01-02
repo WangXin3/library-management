@@ -14,5 +14,7 @@ import java.util.List;
 public interface MenuMapper extends BaseMapper<Menu> {
 
     List<Menu> getMenuByUserId(String userId);
+
+    List<String> getPermissionByUserId(String id);
 }
 

@@ -15,11 +15,11 @@ public class UserRole extends BaseEntity {
     /**
      * 用户id
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 角色id
      */
-    private Long roleId;
+    private String roleId;
 
 }

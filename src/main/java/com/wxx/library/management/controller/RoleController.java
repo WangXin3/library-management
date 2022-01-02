@@ -1,9 +1,11 @@
 package com.wxx.library.management.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wxx.library.management.entity.Role;
+import com.wxx.library.management.service.RoleMenuService;
 import com.wxx.library.management.service.RoleService;
 import com.wxx.library.management.util.RespBean;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.List;
 public class RoleController {
 
     private final RoleService roleService;
+    private final RoleMenuService roleMenuService;
 
     /**
      * 分页查询所有数据
@@ -35,7 +38,8 @@ public class RoleController {
     @GetMapping
     @PreAuthorize("@lm.check('role:list')")
     public RespBean selectAll(Page<Role> page, Role role) {
-        return RespBean.success(roleService.page(page, new QueryWrapper<>(role)));
+        return RespBean.success(roleService.page(page,
+                new LambdaQueryWrapper<Role>().like(StrUtil.isNotBlank(role.getName()), Role::getName, role.getName())));
     }
 
     /**
@@ -84,6 +88,14 @@ public class RoleController {
     @PreAuthorize("@lm.check('role:del')")
     public RespBean delete(@RequestParam("idList") List<String> idList) {
         return RespBean.success(roleService.removeByIds(idList));
+    }
+
+    @PostMapping("/saveOrUpdateMenuByRoleId/{roleId}")
+    @PreAuthorize("@lm.check('role:edit')")
+    public RespBean saveOrUpdateMenuByRoleId(@PathVariable("roleId") String roleId,
+                                             @RequestBody List<String> menuIds) {
+
+        return RespBean.success(roleMenuService.saveOrUpdateMenuByRoleId(roleId, menuIds));
     }
 }
 

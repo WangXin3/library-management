@@ -1,6 +1,7 @@
 package com.wxx.library.management.controller;
 
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wxx.library.management.entity.Menu;
@@ -36,7 +37,7 @@ public class MenuController {
     @PreAuthorize("@lm.check('menu:list')")
     public RespBean selectAll(Page<Menu> page, Menu menu) {
         return RespBean.success(menuService.page(page, new LambdaQueryWrapper<Menu>()
-                .like(Menu::getName, "%" + menu.getName() + "%").isNull(Menu::getPid)));
+                .like(StrUtil.isNotBlank(menu.getName()), Menu::getName, menu.getName()).isNull(Menu::getPid)));
     }
 
     @GetMapping("/buildTree")
@@ -102,6 +103,12 @@ public class MenuController {
     @GetMapping("/buildMenu")
     public RespBean buildMenu() {
         return RespBean.success(menuService.buildMenu());
+    }
+
+    @GetMapping("/getMenuByRoleId/{roleId}")
+    @PreAuthorize("@lm.check('role:list')")
+    public RespBean getMenuByRoleId(@PathVariable("roleId") String roleId) {
+        return RespBean.success(menuService.getMenuByRoleId(roleId));
     }
 }
 

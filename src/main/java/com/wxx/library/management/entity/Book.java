@@ -15,7 +15,7 @@ public class Book extends BaseEntity {
     /**
      * 分类id
      */
-    private Long bookCategoryId;
+    private String bookCategoryId;
 
     /**
      * 书名

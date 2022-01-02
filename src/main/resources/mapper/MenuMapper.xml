@@ -7,7 +7,18 @@
         from menu m
                  left join role_menu rm on m.id = rm.menu_id and rm.deleted = 0
                  left join user_role ur on ur.role_id = rm.role_id and ur.deleted = 0
-        where ur.user_id = #{userId} and m.deleted = 0 and m.type != 2;
+        where ur.user_id = #{userId}
+          and m.deleted = 0
+          and m.type != 2;
+    </select>
+    <select id="getPermissionByUserId" resultType="java.lang.String">
+        select m.permission
+        from menu m
+                 left join role_menu rm on m.id = rm.menu_id and rm.deleted = 0
+                 left join user_role ur on ur.role_id = rm.role_id and ur.deleted = 0
+        where ur.user_id = #{userId}
+          and m.deleted = 0
+          and m.type != 0;
     </select>
 </mapper>
 

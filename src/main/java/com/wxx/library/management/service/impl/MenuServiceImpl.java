@@ -1,15 +1,18 @@
 package com.wxx.library.management.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wxx.library.management.entity.BaseEntity;
 import com.wxx.library.management.entity.Menu;
+import com.wxx.library.management.entity.RoleMenu;
 import com.wxx.library.management.entity.dto.MenuDTO;
 import com.wxx.library.management.entity.dto.MetaDTO;
 import com.wxx.library.management.entity.vo.MenuVO;
 import com.wxx.library.management.mapper.MenuMapper;
 import com.wxx.library.management.service.MenuService;
+import com.wxx.library.management.service.RoleMenuService;
 import com.wxx.library.management.util.SecurityUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,16 +32,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
 
+    private final RoleMenuService roleMenuService;
+
     @Override
     public List<MenuDTO> buildMenu() {
-        List<Menu> menus;
-        if (SecurityUtil.getAuthorities().contains("admin")) {
-            menus = this.lambdaQuery().ne(Menu::getType, 2)
-                    .list();
-        } else {
-            menus = this.getBaseMapper().getMenuByUserId(SecurityUtil.getUserId());
-        }
-
+        List<Menu> menus = this.getBaseMapper().getMenuByUserId(SecurityUtil.getUserId());
 
         List<MenuDTO> menuDTOS = menus.stream().map(m -> {
             MenuDTO menuDTO = new MenuDTO();
@@ -71,7 +69,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     @Override
     public List<MenuVO> buildTree(Menu menu) {
         List<Menu> list = this.lambdaQuery()
-                .like(Menu::getName, "%" + menu.getName() + "%")
+                .like(StrUtil.isNotBlank(menu.getName()), Menu::getName, menu.getName())
                 .isNull(Menu::getPid)
                 .list();
 
@@ -79,6 +77,10 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     private List<MenuVO> getMenuVOS(List<Menu> list) {
+        if (CollUtil.isEmpty(list)) {
+            return CollUtil.newArrayList();
+        }
+
         List<String> ids = list.stream().map(BaseEntity::getId).collect(Collectors.toList());
         Map<String, Long> map = this.lambdaQuery()
                 .in(Menu::getPid, ids)
@@ -97,6 +99,17 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     public List<MenuVO> getChildren(String pid) {
         List<Menu> list = this.lambdaQuery().eq(Menu::getPid, pid).list();
         return getMenuVOS(list);
+    }
+
+    @Override
+    public List<String> getMenuByRoleId(String roleId) {
+        return roleMenuService.lambdaQuery().eq(RoleMenu::getRoleId, roleId).list()
+                .stream().map(RoleMenu::getMenuId).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> getPermissionByUserId(String id) {
+        return this.getBaseMapper().getPermissionByUserId(id);
     }
 }
 

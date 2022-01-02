@@ -15,11 +15,11 @@ public class RoleMenu extends BaseEntity {
     /**
      * 角色id
      */
-    private Long roleId;
+    private String roleId;
 
     /**
      * 菜单id
      */
-    private Long menuId;
+    private String menuId;
 
 }

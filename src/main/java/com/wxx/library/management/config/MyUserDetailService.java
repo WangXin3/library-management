@@ -6,7 +6,6 @@ import com.wxx.library.management.service.UserRoleService;
 import com.wxx.library.management.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -36,14 +35,12 @@ public class MyUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException("找不到账号！");
         }
 
-        List<GrantedAuthority> authorities;
+        // 查询这个账号的权限
+        List<String> permissions = userRoleService.getPermissionByUserId(user.getId());
+        List<GrantedAuthority> authorities = permissions.stream().distinct().filter(StrUtil::isNotBlank)
+                .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
         if (Num.Y.v().equals(user.getAdmin())) {
-            authorities = AuthorityUtils.commaSeparatedStringToAuthorityList("admin");
-        } else {
-            // 查询这个账号的权限
-            List<String> permissions = userRoleService.getPermissionByUserId(user.getId());
-            authorities = permissions.stream().distinct().filter(StrUtil::isNotBlank).map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList());
+            authorities.add(new SimpleGrantedAuthority("admin"));
         }
         return new MyUserDetails(user.getUsername(), user.getPassword(), user.getId(), user.getEnabled(), authorities);
     }
