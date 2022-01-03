@@ -1,7 +1,6 @@
 package com.wxx.library.management.config;
 
 import cn.hutool.core.util.StrUtil;
-import com.wxx.library.management.constant.Num;
 import com.wxx.library.management.service.UserRoleService;
 import com.wxx.library.management.service.UserService;
 import lombok.AllArgsConstructor;
@@ -39,9 +38,6 @@ public class MyUserDetailService implements UserDetailsService {
         List<String> permissions = userRoleService.getPermissionByUserId(user.getId());
         List<GrantedAuthority> authorities = permissions.stream().distinct().filter(StrUtil::isNotBlank)
                 .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-        if (Num.Y.v().equals(user.getAdmin())) {
-            authorities.add(new SimpleGrantedAuthority("admin"));
-        }
         return new MyUserDetails(user.getUsername(), user.getPassword(), user.getId(), user.getEnabled(), authorities);
     }
 

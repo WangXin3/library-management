@@ -87,14 +87,13 @@ public class RoleController {
     @DeleteMapping
     @PreAuthorize("@lm.check('role:del')")
     public RespBean delete(@RequestParam("idList") List<String> idList) {
-        return RespBean.success(roleService.removeByIds(idList));
+        return RespBean.success(roleService.removeByIdsAndOther(idList));
     }
 
     @PostMapping("/saveOrUpdateMenuByRoleId/{roleId}")
     @PreAuthorize("@lm.check('role:edit')")
     public RespBean saveOrUpdateMenuByRoleId(@PathVariable("roleId") String roleId,
                                              @RequestBody List<String> menuIds) {
-
         return RespBean.success(roleMenuService.saveOrUpdateMenuByRoleId(roleId, menuIds));
     }
 }

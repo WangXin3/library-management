@@ -50,11 +50,6 @@ public class User extends BaseEntity {
     private String password;
 
     /**
-     * admin账号 0-否 1-是
-     */
-    private Integer admin;
-
-    /**
      * 帐号状态 0-禁用 1-启用
      */
     private Integer enabled;
