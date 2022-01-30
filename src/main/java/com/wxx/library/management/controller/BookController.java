@@ -1,9 +1,9 @@
 package com.wxx.library.management.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wxx.library.management.entity.Book;
+import com.wxx.library.management.entity.vo.BookVO;
 import com.wxx.library.management.service.BookService;
 import com.wxx.library.management.util.RespBean;
 import lombok.AllArgsConstructor;
@@ -34,8 +34,8 @@ public class BookController {
      */
     @GetMapping
     @PreAuthorize("@lm.check('book:list')")
-    public RespBean selectAll(Page<Book> page, Book book) {
-        return RespBean.success(bookService.page(page, new QueryWrapper<>(book)));
+    public RespBean selectAll(Page<BookVO> page, Book book) {
+        return RespBean.success(bookService.pageVO(page, book));
     }
 
     /**

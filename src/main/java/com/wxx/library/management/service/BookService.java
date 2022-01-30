@@ -1,7 +1,9 @@
 package com.wxx.library.management.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wxx.library.management.entity.Book;
+import com.wxx.library.management.entity.vo.BookVO;
 
 /**
  * 书(Book)表服务接口
@@ -11,5 +13,6 @@ import com.wxx.library.management.entity.Book;
  */
 public interface BookService extends IService<Book> {
 
+    Page<BookVO> pageVO(Page<BookVO> page, Book book);
 }
 

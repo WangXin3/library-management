@@ -2,5 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wxx.library.management.mapper.BookMapper">
 
+    <select id="pageVO" resultType="com.wxx.library.management.entity.vo.BookVO">
+        select b.*, bc.category_name
+        from book b
+        left join book_category bc on b.book_category_id = bc.id and bc.deleted = 0
+        where b.deleted = 0
+        <if test="bookName != null and bookName != ''">
+            and b.book_name like concat('%', #{bookName}, '%')
+        </if>
+    </select>
 </mapper>
 

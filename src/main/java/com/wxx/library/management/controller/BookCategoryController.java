@@ -1,7 +1,8 @@
 package com.wxx.library.management.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wxx.library.management.entity.BookCategory;
 import com.wxx.library.management.service.BookCategoryService;
@@ -28,14 +29,15 @@ public class BookCategoryController {
     /**
      * 分页查询所有数据
      *
-     * @param page 分页对象
+     * @param page         分页对象
      * @param bookCategory 查询实体
      * @return 所有数据
      */
     @GetMapping
     @PreAuthorize("@lm.check('bookCategory:list')")
     public RespBean selectAll(Page<BookCategory> page, BookCategory bookCategory) {
-        return RespBean.success(bookCategoryService.page(page, new QueryWrapper<>(bookCategory)));
+        return RespBean.success(bookCategoryService.page(page, new LambdaQueryWrapper<BookCategory>()
+                .like(StrUtil.isNotBlank(bookCategory.getCategoryName()), BookCategory::getCategoryName, bookCategory.getCategoryName())));
     }
 
     /**
