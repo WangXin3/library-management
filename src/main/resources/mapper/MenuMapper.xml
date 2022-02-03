@@ -9,7 +9,8 @@
                  left join user_role ur on ur.role_id = rm.role_id and ur.deleted = 0
         where ur.user_id = #{userId}
           and m.deleted = 0
-          and m.type != 2;
+          and m.type != 2
+        order by m.menu_sort
     </select>
     <select id="getPermissionByUserId" resultType="java.lang.String">
         select m.permission

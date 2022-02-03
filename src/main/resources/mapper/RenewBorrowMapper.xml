@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxx.library.management.mapper.RenewBorrowMapper">
+
+    <select id="pageMy" resultType="com.wxx.library.management.entity.vo.RenewBorrowVO">
+        select rb.*, bk.book_name, u.username, bk.image
+        from renew_borrow rb
+        left join borrow b on rb.borrow_id = b.id and b.deleted = 0
+        left join book bk on b.book_id = bk.id and bk.deleted = 0
+        left join user u on b.user_id = u.id and u.deleted = 0
+        where rb.deleted = 0
+        <if test="key != null and key != ''">
+            and (bk.book_name like concat('%', #{key}, '%') or u.username like concat('%', #{key}, '%'))
+        </if>
+    </select>
+</mapper>
+

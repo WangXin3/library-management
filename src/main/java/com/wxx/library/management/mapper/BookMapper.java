@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface BookMapper extends BaseMapper<Book> {
 
-    Page<BookVO> pageVO(@Param("page") Page<BookVO> page, @Param("bookName") String bookName);
+    Page<BookVO> pageVO(@Param("page") Page<BookVO> page, @Param("bookName") String bookName,
+                        @Param("bookCategoryId") String bookCategoryId);
 }
 

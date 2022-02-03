@@ -23,7 +23,7 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements Bo
 
     @Override
     public Page<BookVO> pageVO(Page<BookVO> page, Book book) {
-        return this.getBaseMapper().pageVO(page, book.getBookName());
+        return this.getBaseMapper().pageVO(page, book.getBookName(), book.getBookCategoryId());
     }
 }
 

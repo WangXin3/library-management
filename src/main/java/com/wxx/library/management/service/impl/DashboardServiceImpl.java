@@ -1,11 +1,7 @@
 package com.wxx.library.management.service.impl;
 
-import cn.hutool.core.util.RandomUtil;
 import com.wxx.library.management.entity.vo.DashboardVO;
-import com.wxx.library.management.service.BookCategoryService;
-import com.wxx.library.management.service.BookService;
-import com.wxx.library.management.service.DashboardService;
-import com.wxx.library.management.service.UserService;
+import com.wxx.library.management.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +16,7 @@ public class DashboardServiceImpl implements DashboardService {
     private final UserService userService;
     private final BookService bookService;
     private final BookCategoryService bookCategoryService;
-
+    private final BorrowService borrowService;
     @Override
     public DashboardVO getNum() {
         DashboardVO dashboardVO = new DashboardVO();
@@ -33,8 +29,9 @@ public class DashboardServiceImpl implements DashboardService {
         Integer bookCount = bookService.lambdaQuery().count();
         dashboardVO.setBookNum(bookCount);
 
-        // TODO 查询借阅数量
-        dashboardVO.setBorrowNum(RandomUtil.randomInt(999, 100000));
+        // 借阅次数
+        int count = borrowService.count();
+        dashboardVO.setBorrowNum(count);
 
         // 查询分类数量
         Integer categoryCount = bookCategoryService.lambdaQuery().count();

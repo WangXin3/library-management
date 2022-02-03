@@ -40,6 +40,12 @@ public class BookCategoryController {
                 .like(StrUtil.isNotBlank(bookCategory.getCategoryName()), BookCategory::getCategoryName, bookCategory.getCategoryName())));
     }
 
+    @GetMapping("/buildCategoryTree")
+    @PreAuthorize("@lm.check('bookCategory:list', 'book-borrow:list')")
+    public RespBean buildCategoryTree(@RequestParam String categoryName) {
+        return RespBean.success(bookCategoryService.buildCategoryTree(categoryName));
+    }
+
     /**
      * 通过主键查询单条数据
      *

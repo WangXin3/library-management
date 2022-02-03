@@ -52,4 +52,8 @@ public class Book extends BaseEntity {
      */
     private String image;
 
+    /**
+     * 库存
+     */
+    private Integer stock;
 }

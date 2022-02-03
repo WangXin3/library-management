@@ -10,6 +10,9 @@
         <if test="bookName != null and bookName != ''">
             and b.book_name like concat('%', #{bookName}, '%')
         </if>
+        <if test="bookCategoryId != null and bookCategoryId != ''">
+            and b.book_category_id = #{bookCategoryId}
+        </if>
     </select>
 </mapper>
 

@@ -33,7 +33,7 @@ public class BookController {
      * @return 所有数据
      */
     @GetMapping
-    @PreAuthorize("@lm.check('book:list')")
+    @PreAuthorize("@lm.check('book:list', 'book-borrow:list')")
     public RespBean selectAll(Page<BookVO> page, Book book) {
         return RespBean.success(bookService.pageVO(page, book));
     }

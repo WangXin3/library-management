@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wxx.library.management.mapper.BorrowMapper">
+
+    <select id="page" resultType="com.wxx.library.management.entity.vo.BorrowVO">
+        select b.*, u.username, bk.book_name, bk.image
+        from borrow b
+        left join user u on b.user_id = u.id and u.deleted = 0
+        left join book bk on b.book_id = bk.id and bk.deleted = 0
+        where b.deleted = 0
+        <if test="key != null and key != ''">
+            and (bk.book_name like concat('%', #{key}, '%') or u.username like concat('%', #{key}, '%'))
+        </if>
+    </select>
+    <select id="my" resultType="com.wxx.library.management.entity.vo.BorrowVO">
+        select b.*, u.username, bk.book_name, bk.image
+        from borrow b
+        left join user u on b.user_id = u.id and u.deleted = 0
+        left join book bk on b.book_id = bk.id and bk.deleted = 0
+        where b.deleted = 0
+        and b.user_id = #{userId}
+        <if test="key != null and key != ''">
+            and bk.book_name like concat('%', #{key}, '%')
+        </if>
+    </select>
+</mapper>
+
