@@ -2,5 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wxx.library.management.mapper.BookCategoryMapper">
 
+    <select id="hotCategory" resultType="com.wxx.library.management.entity.vo.HotCategoryVO">
+        select count(*) as value, bc.category_name as name
+        from borrow bw
+                 left join book b on bw.book_id = b.id and b.deleted = 0
+                 left join book_category bc on b.book_category_id = bc.id and bc.deleted = 0
+        where bw.deleted = 0
+        group by bc.id
+        order by value desc
+        limit 8
+    </select>
 </mapper>
 

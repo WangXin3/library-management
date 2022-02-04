@@ -2,6 +2,9 @@ package com.wxx.library.management.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.wxx.library.management.entity.BookCategory;
+import com.wxx.library.management.entity.vo.HotCategoryVO;
+
+import java.util.List;
 
 /**
  * 图书分类(BookCategory)表数据库访问层
@@ -11,5 +14,6 @@ import com.wxx.library.management.entity.BookCategory;
  */
 public interface BookCategoryMapper extends BaseMapper<BookCategory> {
 
+    List<HotCategoryVO> hotCategory();
 }
 

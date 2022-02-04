@@ -35,7 +35,11 @@ public class BorrowServiceImpl extends ServiceImpl<BorrowMapper, Borrow> impleme
     @Transactional(rollbackFor = Exception.class)
     public Boolean saveMy(Borrow borrow) {
         // 先查询该用户是否已经借阅过该书
-        Integer count = this.lambdaQuery().eq(Borrow::getUserId, SecurityUtil.getUserId()).eq(Borrow::getBookId, borrow.getBookId()).count();
+        Integer count = this.lambdaQuery()
+                .eq(Borrow::getUserId, SecurityUtil.getUserId())
+                .eq(Borrow::getBookId, borrow.getBookId())
+                .eq(Borrow::getReturned, Num.N.v())
+                .count();
         if (count > 0) {
             throw new LMException("请勿重复借阅！");
         }
@@ -53,7 +57,7 @@ public class BorrowServiceImpl extends ServiceImpl<BorrowMapper, Borrow> impleme
         borrow.setMaturityTime(now.plusDays(30));
         // 减库存
         bookService.lambdaUpdate()
-                .eq(BaseEntity::getId, borrow.getId())
+                .eq(BaseEntity::getId, borrow.getBookId())
                 .set(Book::getStock, book.getStock() - 1)
                 .update();
         return this.save(borrow);

@@ -85,5 +85,11 @@ public class BookController {
     public RespBean delete(@RequestParam("idList") List<String> idList) {
         return RespBean.success(bookService.removeByIds(idList));
     }
+
+    @GetMapping("/hotBook")
+    @PreAuthorize("@lm.check('hot-book:list')")
+    public RespBean hotBook() {
+        return RespBean.success(bookService.hotBook());
+    }
 }
 

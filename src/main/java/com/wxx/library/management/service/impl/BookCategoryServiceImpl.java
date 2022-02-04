@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wxx.library.management.entity.BookCategory;
 import com.wxx.library.management.entity.vo.BookCategoryVO;
+import com.wxx.library.management.entity.vo.HotCategoryVO;
 import com.wxx.library.management.mapper.BookCategoryMapper;
 import com.wxx.library.management.service.BookCategoryService;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,11 @@ public class BookCategoryServiceImpl extends ServiceImpl<BookCategoryMapper, Boo
                 .list();
 
         return this.getBookCategoryVOS(list);
+    }
+
+    @Override
+    public List<HotCategoryVO> hotCategory() {
+        return this.baseMapper.hotCategory();
     }
 
     private List<BookCategoryVO> getBookCategoryVOS(List<BookCategory> list) {

@@ -93,5 +93,11 @@ public class BookCategoryController {
     public RespBean delete(@RequestParam("idList") List<String> idList) {
         return RespBean.success(bookCategoryService.removeByIds(idList));
     }
+
+    @GetMapping("/hotCategory")
+    @PreAuthorize("@lm.check('hot-category:list')")
+    public RespBean hotCategory() {
+        return RespBean.success(bookCategoryService.hotCategory());
+    }
 }
 

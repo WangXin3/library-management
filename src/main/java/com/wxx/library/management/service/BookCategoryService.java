@@ -3,6 +3,7 @@ package com.wxx.library.management.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wxx.library.management.entity.BookCategory;
 import com.wxx.library.management.entity.vo.BookCategoryVO;
+import com.wxx.library.management.entity.vo.HotCategoryVO;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ import java.util.List;
 public interface BookCategoryService extends IService<BookCategory> {
 
     List<BookCategoryVO> buildCategoryTree(String categoryName);
+
+    List<HotCategoryVO> hotCategory();
 }
 

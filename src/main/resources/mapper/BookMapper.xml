@@ -14,5 +14,14 @@
             and b.book_category_id = #{bookCategoryId}
         </if>
     </select>
+    <select id="hotBook" resultType="com.wxx.library.management.entity.vo.HotBookVO">
+        select book_id, count(*) as count, b.book_name
+        from borrow bw
+                 left join book b on bw.book_id = b.id and b.deleted = 0
+        where bw.deleted = 0
+        group by book_id
+        order by count desc
+        limit 15
+    </select>
 </mapper>
 
