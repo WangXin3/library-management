@@ -11,6 +11,7 @@
         <if test="key != null and key != ''">
             and (bk.book_name like concat('%', #{key}, '%') or u.username like concat('%', #{key}, '%'))
         </if>
+        order by b.borrow_time desc
     </select>
     <select id="my" resultType="com.wxx.library.management.entity.vo.BorrowVO">
         select b.*, u.username, bk.book_name, bk.image
@@ -22,6 +23,7 @@
         <if test="key != null and key != ''">
             and bk.book_name like concat('%', #{key}, '%')
         </if>
+        order by b.borrow_time desc
     </select>
 </mapper>
 

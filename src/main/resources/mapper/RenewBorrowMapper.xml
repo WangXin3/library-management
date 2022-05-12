@@ -12,6 +12,7 @@
         <if test="key != null and key != ''">
             and (bk.book_name like concat('%', #{key}, '%') or u.username like concat('%', #{key}, '%'))
         </if>
+        order by rb.renew_time desc
     </select>
 </mapper>
 
