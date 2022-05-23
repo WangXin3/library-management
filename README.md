@@ -16,6 +16,7 @@
 2. 启用redis
 3. 修改application.yaml，数据库连接信息，账号密码。redis连接信息，密码。
 4. 运行项目。
+5. 默认超级管理员账号密码admin/admin
 
 对应前端项目地址：https://github.com/WangXin3/library-management-front
 
