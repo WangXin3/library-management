@@ -21,10 +21,10 @@
 对应前端项目地址：https://github.com/WangXin3/library-management-front
 
 项目截图：
-![alt 属性文本](https://s1.328888.xyz/2022/05/23/dVN4Q.png "首页")
-![alt 属性文本](https://s1.328888.xyz/2022/05/23/dVST3.png "分类管理")
-![alt 属性文本](https://s1.328888.xyz/2022/05/23/dVoN4.png "图书馆里")
-![alt 属性文本](https://s1.328888.xyz/2022/05/23/dVEfB.png "我的借阅")
+![alt 属性文本](https://github.com/WangXin3/library-management/blob/master/%E9%A6%96%E9%A1%B5.png?raw=true "首页")
+![alt 属性文本](https://github.com/WangXin3/library-management/blob/master/%E5%88%86%E7%B1%BB%E7%AE%A1%E7%90%86.png?raw=true "分类管理")
+![alt 属性文本](https://github.com/WangXin3/library-management/blob/master/%E5%9B%BE%E4%B9%A6%E7%AE%A1%E7%90%86.png?raw=true "图书馆里")
+![alt 属性文本](https://github.com/WangXin3/library-management/blob/master/%E6%88%91%E7%9A%84%E5%80%9F%E9%98%85.png?raw=true "我的借阅")
 
 
 有问题可联系我
