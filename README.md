@@ -12,7 +12,7 @@
 运行前置条件：Redis、Mysql5.7、Jdk1.8(基于1.8开发，其他版本自测)
 
 运行步骤：
-1. 创建数据库名为library_management、运行本项目init.sql文件。
+1. 创建数据库名为library_management、运行本项目init.sql文件(因数据量大，执行时间较长，请耐心等待，大约1-10分钟)。
 2. 启用redis
 3. 修改application.yaml，数据库连接信息，账号密码。redis连接信息，密码。
 4. 运行项目。
