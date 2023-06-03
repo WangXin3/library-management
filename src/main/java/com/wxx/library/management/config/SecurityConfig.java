@@ -4,7 +4,6 @@ import com.wxx.library.management.util.JwtUtil;
 import com.wxx.library.management.util.ResponseUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
@@ -32,14 +30,12 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final StringRedisTemplate stringRedisTemplate;
     private final JwtUtil jwtUtil;
-    private final CorsConfigurationSource corsConfigurationSource;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        LoginFilter loginFilter = new LoginFilter(authenticationManager(), jwtUtil, stringRedisTemplate);
-        TokenAuthenticationFilter tokenFilter = new TokenAuthenticationFilter(authenticationManager(), jwtUtil, stringRedisTemplate);
+        LoginFilter loginFilter = new LoginFilter(authenticationManager(), jwtUtil);
+        TokenAuthenticationFilter tokenFilter = new TokenAuthenticationFilter(authenticationManager(), jwtUtil);
         http.exceptionHandling()
                 // 自定义 401 Unauthorized 未授权，就是没有登录，header中没有传Token
                 .authenticationEntryPoint((request, response, authException)
@@ -62,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .anyRequest().authenticated()
                 .and().logout().logoutUrl("/logout")
-                .addLogoutHandler(new TokenLogoutHandler(jwtUtil, stringRedisTemplate))
+                .addLogoutHandler(new TokenLogoutHandler(jwtUtil))
                 .and()
                 .addFilterBefore(loginFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)

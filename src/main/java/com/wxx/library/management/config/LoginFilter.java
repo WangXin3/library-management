@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.wxx.library.management.util.JwtUtil;
 import com.wxx.library.management.util.RequestUtil;
 import com.wxx.library.management.util.ResponseUtil;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import com.wxx.library.management.util.SecurityUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,13 +28,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final StringRedisTemplate stringRedisTemplate;
 
-    protected LoginFilter(AuthenticationManager authenticationManager,
-                          JwtUtil jwtUtil, StringRedisTemplate stringRedisTemplate) {
+    protected LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
-        this.stringRedisTemplate = stringRedisTemplate;
     }
 
     @Override
@@ -47,13 +44,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
 
 
-
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         MyUserDetails user = (MyUserDetails) authResult.getPrincipal();
         Set<String> authorities = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toSet());
-        // 将该用户的权限放入redis
-        stringRedisTemplate.opsForValue().set(user.getUsername(), JSON.toJSONString(authorities));
+        // 将该用户的权限放入缓存
+        SecurityUtil.set(user.getUsername(), JSON.toJSONString(authorities));
 
         String token = jwtUtil.generateToken(user);
         ResponseUtil.writerSuccess(response, "登录成功！", token);

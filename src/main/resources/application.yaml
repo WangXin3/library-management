@@ -9,9 +9,6 @@ spring:
     password: root
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-  redis:
-    port: 6379
-    host: localhost
 
 
 mybatis-plus:

@@ -4,7 +4,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import com.alibaba.fastjson.JSON;
 import com.wxx.library.management.util.JwtUtil;
 import com.wxx.library.management.util.ResponseUtil;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import com.wxx.library.management.util.SecurityUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,13 +29,10 @@ import java.util.stream.Collectors;
 public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
 
     private final JwtUtil jwtUtil;
-    private final StringRedisTemplate stringRedisTemplate;
 
-    public TokenAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil,
-                                     StringRedisTemplate stringRedisTemplate) {
+    public TokenAuthenticationFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         super(authenticationManager);
         this.jwtUtil = jwtUtil;
-        this.stringRedisTemplate = stringRedisTemplate;
     }
 
     @Override
@@ -50,8 +47,9 @@ public class TokenAuthenticationFilter extends BasicAuthenticationFilter {
                 ResponseUtil.writerError(response, "篡改token!", HttpStatus.UNAUTHORIZED);
                 return;
             }
-            // 从redis中获取权限列表
-            String authorityList = stringRedisTemplate.opsForValue().get(myUserDetails.getUsername());
+            // 从缓存中获取权限列表
+            String authorityList = SecurityUtil.get(myUserDetails.getUsername());
+
             Set<SimpleGrantedAuthority> authorities;
             if (CharSequenceUtil.isNotBlank(authorityList)) {
                 authorities = Objects.requireNonNull(JSON.parseArray(authorityList, String.class)).stream()
